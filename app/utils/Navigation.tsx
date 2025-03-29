@@ -27,7 +27,7 @@ export default function Navigation() {
                     backgroundColor: "#DDDDDD",
                 },
                 headerShadowVisible: false,
-                headerBackButtonMenuEnabled: true,
+                headerBackButtonMenuEnabled: false,
                 headerTitleStyle: {
                     color: ""
                 },

@@ -1,5 +1,4 @@
 import {create} from "zustand";
-import colors from "@/assets/colors";
 
 type User = {
     id: string;
@@ -13,8 +12,8 @@ type AppState = {
     user: User | undefined | null;
 }
 
-// @ts-ignore
-export default useStore = create<AppState>((set) => {
+
+const useStore = create<AppState>((set) => {
     // Logic to initialize data
     // Return the state data
     return {
@@ -22,4 +21,4 @@ export default useStore = create<AppState>((set) => {
     }
 });
 
-export {AppState};
+export {AppState, useStore, User};

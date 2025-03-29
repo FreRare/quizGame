@@ -28,19 +28,19 @@ type NavigationScreenListPrimitive = {
 
 const NavigationScreens: NavigationScreenListPrimitive[] = [
     {
-        title: strings.PAGES.home,
+        title: strings.PAGES.auth,
         route: "/",
-        icon: "home-outline",
-        component: Home,
+        icon: "log-in-outline",
+        component: Auth,
         showHeader: false,
         menubar: false,
     },
     {
-        title: strings.PAGES.auth,
-        route: ReParseNavigationRoute(strings.PAGES.auth),
-        icon: "log-in-outline",
-        component: Auth,
-        showHeader: true,
+        title: strings.PAGES.home,
+        route: ReParseNavigationRoute(strings.PAGES.home),
+        icon: "home-outline",
+        component: Home,
+        showHeader: false,
         menubar: false,
     },
     {

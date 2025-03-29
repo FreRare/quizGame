@@ -15,11 +15,11 @@ const Home = (props: HomeProps)=> {
     return (
         <Layout>
             <Text style={styles.title}>Quiz Game</Text>
-            <BigMenuButton title={"Roll in"} content={"Join a game via invite code"} bgColor={"#FFFFFF"}
+            <BigMenuButton title={"Quick play"} content={"Start a game to test your knowledge"} extensionText={"You can select topics and difficulty later on, but no records will be made"} bgColor={"#FFFFFF"}
                            fontColor={"#45B6FE"} redirectPage={strings.PAGES.startGame} navigation={props.navigation}/>
             <Text style={styles.separatorText}>OR</Text>
-            <BigMenuButton title={"Create a game"} content={"Log in to create your own game"}
-                           extensionText={"After logging in you'll be able to create your own game with custom questions"}
+            <BigMenuButton title={"Log in"} content={"Start by logging"}
+                           extensionText={"After you'll be able to see all your scores and even more"}
                            bgColor={"#FFFFFF"} fontColor={"#45B6FE"} redirectPage={strings.PAGES.auth} navigation={props.navigation}/>
         </Layout>
     );
