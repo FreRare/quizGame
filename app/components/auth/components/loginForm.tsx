@@ -2,7 +2,6 @@ import React from 'react';
 import {ScrollView, View, Text, StyleSheet, TextInput, TouchableOpacity} from "react-native";
 import strings from "@/assets/strings";
 import commonStyles from "@/app/utils/CommonStyles";
-import {User} from "@/app/models/GlobalState";
 import colors from "@/assets/colors";
 import Icon from "@expo/vector-icons/FontAwesome";
 
@@ -53,14 +52,14 @@ const LoginForm = (props: LoginScreenProps) => {
             ></TextInput>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={commonStyles.button} onPress={handleLogin}>
-                    <Text>{strings.login}</Text>
+                    <Text style={commonStyles.text}>{strings.login}</Text>
                 </TouchableOpacity>
-                <Text>{strings.or}</Text>
+                <Text style={commonStyles.text}>{strings.or}</Text>
                 <TouchableOpacity
                     style={commonStyles.button}
                     onPress={() => props.setIsLogin(false)}
                 >
-                    <Text>{strings.signup}</Text>
+                    <Text style={commonStyles.text}>{strings.signup}</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         opacity: 1,
         width: "50%",
-        backgroundColor: colors.formBackground,
+        backgroundColor: colors.secondary,
         borderColor: colors.textSecondary,
         borderWidth: 5,
         alignItems: "center",
@@ -88,7 +87,7 @@ const styles = StyleSheet.create({
     icon: {
         marginBottom: 40,
         marginTop: 50,
-        borderColor: colors.black,
+        borderColor: colors.textPrimary,
         alignItems: "center",
         justifyContent: "center",
         borderWidth: 3,

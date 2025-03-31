@@ -5,22 +5,28 @@ const windowWidth = Dimensions.get("window").width;
 
 const commonStyles = StyleSheet.create({
     title: {
-        fontSize: 20,
+        fontSize: 30,
         marginBottom: 10,
+    },
+    text: {
+        color: colors.textPrimary,
+        fontSize: 20,
     },
     input: {
         flex: 1,
+        opacity: 1,
         width: "80%",
         padding: 10,
         margin: "2%",
-        backgroundColor: colors.menuBarBackground,
+        backgroundColor: colors.background,
         maxHeight: 50,
         borderRadius: 20,
         borderWidth: 2,
         borderColor: colors.primary,
+        color: colors.textSecondary,
     },
     button: {
-        borderColor: colors.primary,
+        borderColor: colors.background,
         borderWidth: 4,
         borderRadius: 50,
         backgroundColor: colors.secondary,
@@ -30,22 +36,7 @@ const commonStyles = StyleSheet.create({
         maxWidth: "60%",
         padding: 10,
         margin: 10,
-    },
-    dropdownListBoxStyle: {
-        backgroundColor: colors.menuBarBackground,
-        width: 300,
-        marginBottom: 10,
-        marginTop: 20,
-    },
-    dropdownListInputStyle: {
-        color: colors.black,
-    },
-    dropdownListDropdownStyles: {
-        backgroundColor: colors.menuBarBackground,
-        opacity: 1,
-        height: 100,
-        zIndex: 999,
-        position: "relative",
+
     },
     horizontal: {
         flex: 1,
