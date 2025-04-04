@@ -1,6 +1,6 @@
 import React from "react";
 import strings from "@/assets/strings";
-import Home from "@/app/pages/Home";
+import Home from "@/app/components/pages/home/Home";
 import Auth from "@/app/components/pages/auth/Auth";
 import Profile from "@/app/pages/Profile";
 import Statistics from "@/app/pages/Statistics";
