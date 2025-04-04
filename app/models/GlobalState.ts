@@ -1,9 +1,5 @@
 import {create} from "zustand";
-
-type User = {
-    id: string;
-    username: string;
-}
+import {User} from "@/app/models/models";
 
 type AppState = {
     // ==========
