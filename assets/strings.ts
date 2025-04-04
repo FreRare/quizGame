@@ -1,4 +1,5 @@
 const strings = {
+    PROJECT_NAME: "Quizzy",
     PAGES: {
         askQuestion: "Ask Question",
         auth: "Authorization",

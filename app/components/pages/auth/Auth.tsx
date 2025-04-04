@@ -1,8 +1,10 @@
 import React from 'react';
-import {Dimensions, StyleSheet, View} from "react-native";
+import {Dimensions, StyleSheet, View, Text} from "react-native";
 import Layout from "@/app/components/global/layout";
-import LoginForm from "@/app/components/auth/components/loginForm";
-import RegistrationForm from "@/app/components/auth/components/registrationForm";
+import LoginForm from "@/app/components/pages/auth/components/loginForm";
+import RegistrationForm from "@/app/components/pages/auth/components/registrationForm";
+import strings from "@/assets/strings";
+import commonStyles from "@/app/utils/CommonStyles";
 
 type AuthProps = {
     navigation: any;
@@ -14,6 +16,9 @@ function Auth(props: AuthProps) {
 
     return (
         <Layout>
+            <View style={styles.titleContainer}>
+                <Text style={commonStyles.title}>{strings.PROJECT_NAME}</Text>
+            </View>
             <View style={styles.backgroundImage}>
                 {isLogin && (
                     <LoginForm
@@ -39,6 +44,11 @@ const styles = StyleSheet.create({
         height: windowHeight,
         alignItems: "center",
         justifyContent: "flex-start",
+    },
+    titleContainer: {
+        display: "flex",
+        margin: 10,
+        padding: 10,
     },
 });
 
