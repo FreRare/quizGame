@@ -10,7 +10,7 @@ import CreateGame from "@/app/pages/CreateGame";
 import JoinGame from "@/app/pages/JoinGame";
 import QuestionResult from "@/app/pages/QuestionResult";
 import Settings from "@/app/pages/Settings";
-import ReParseNavigationRoute from "@/app/hooks/navigationRouteGeneratorPipe";
+import {ReParseNavigationRoute} from "@/app/hooks/navigationRouteGeneratorPipe";
 
 /**
  * Property type
