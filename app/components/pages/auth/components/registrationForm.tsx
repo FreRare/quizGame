@@ -12,7 +12,6 @@ import strings from "@/assets/strings";
 import commonStyles from "@/app/utils/CommonStyles";
 import colors from "@/assets/colors";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import now = jest.now;
 import {AppState, useStore} from "@/app/models/GlobalState";
 
 interface RegistrationFormProps {

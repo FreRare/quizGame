@@ -25,6 +25,7 @@ const StartGame = (props: StartGameProps) => {
     const topicSelectionSection = Object.values(QuestionTopic).map((k, i) => {
         return (
             <BouncyCheckbox
+                key={i}
                 size={25}
                 style={styles.checkBox}
                 fillColor={colors.secondary}

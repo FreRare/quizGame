@@ -3,7 +3,6 @@ import {Animated, StyleSheet} from "react-native";
 import Text = Animated.Text;
 import Layout from "@/app/components/global/layout";
 import colors from "@/assets/colors";
-import strings from "@/assets/strings";
 
 type HomeProps = {
     navigation: any

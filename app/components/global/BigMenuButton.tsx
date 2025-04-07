@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from "react-native";
 import colors from "@/assets/colors";
-import {useLinkTo} from "@react-navigation/native";
 import NavigationScreens from "@/app/utils/NavigationScreens";
 
 type BigMenuButtonProps = {
