@@ -13,6 +13,7 @@ import commonStyles from "@/app/utils/CommonStyles";
 import colors from "@/assets/colors";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import now = jest.now;
+import {AppState, useStore} from "@/app/models/GlobalState";
 
 interface RegistrationFormProps {
     navigation: any;
@@ -29,6 +30,12 @@ const RegistrationForm = (props: RegistrationFormProps) => {
     const [password, setPassword] = React.useState<string>("");
     const [passwordAgain, setPasswordAgain] = React.useState<string>("");
     const [showDatePicker, setShowDatePicker] = React.useState<boolean>(false);
+
+    const db = useStore((state: AppState) => state.db);
+
+    if (db === null) {
+        console.error("Database is null!");
+    }
 
     const formatDateForHTMLInputValue = (d: Date): string => {
         if(!d) return "";

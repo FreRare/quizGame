@@ -1,3 +1,0 @@
-const registerUser = (username: string, )=> {
-
-}

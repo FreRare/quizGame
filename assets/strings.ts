@@ -22,7 +22,30 @@ const strings = {
     lastNameInputPlaceHolder: "Enter last name",
     confirm: "Confirm",
     cancel: "Cancel",
-
+    goBack: "Go back",
+    science: "Science",
+    history: "History",
+    literature: "Literature",
+    geography: "Geography",
+    sports: "Sports",
+    music: "Music",
+    movies: "Movies",
+    gaming: "Gaming",
+    riddles: "Riddles",
+    exportDatabase: "Export database",
+    importDatabase: "Import database",
+    myGames: "My games",
+    noGamesFound: "No games found!",
+    startGame: "Start a new game",
+    pageNotFound: "Sorry but the page you're looking for cannot be found!",
+    gameSettings: "Game settings",
+    letsGo: "Lets Go!",
+    selectTopics: "Select game topics",
+    selectDuration: "Select game duration",
+    selectLevel: "Select game level",
+    ERROR: {
+        invalidLogin: "Invalid username or password"
+    }
 };
 
 export default strings;

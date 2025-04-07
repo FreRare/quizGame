@@ -7,18 +7,16 @@ import NavigationScreens from "@/app/utils/NavigationScreens";
 type BigMenuButtonProps = {
     navigation: any,
     title: string,
-    content: string,
+    content?: string,
     extensionText?: string,
-    bgColor: string,
-    fontColor: string,
+    bgColor?: string,
+    fontColor?: string,
     redirectPage: string,
     children?: React.JSX.Element,
 };
 
 
 function BigMenuButton(props: BigMenuButtonProps) {
-
-    const linkTo = useLinkTo();
 
     /**
      * Redirect based on navigation route map title matching
@@ -29,7 +27,7 @@ function BigMenuButton(props: BigMenuButtonProps) {
             console.warn("Invalid link!");
             return;
         }
-        linkTo(link.route);
+        props.navigation.navigate(props.redirectPage)
     };
 
     return (

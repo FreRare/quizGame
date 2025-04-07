@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import colors from "@/assets/colors";
 
 type LayoutProps = {
-    children: React.JSX.Element|React.JSX.Element[],
+    children: any,
 };
 
 function Layout(props: LayoutProps) {

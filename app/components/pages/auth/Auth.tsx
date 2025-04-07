@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Dimensions, StyleSheet, View, Text} from "react-native";
 import Layout from "@/app/components/global/layout";
 import LoginForm from "@/app/components/pages/auth/components/loginForm";
 import RegistrationForm from "@/app/components/pages/auth/components/registrationForm";
 import strings from "@/assets/strings";
 import commonStyles from "@/app/utils/CommonStyles";
+import {AppState, useStore} from "@/app/models/GlobalState";
 
 type AuthProps = {
     navigation: any;
@@ -13,6 +14,14 @@ type AuthProps = {
 function Auth(props: AuthProps) {
 
     const [isLogin, setIsLogin] = React.useState<boolean>(true); // Flag to show login or registration
+
+    const initDb = useStore((state: AppState) => state.initDb);
+
+    useEffect(() => {
+        initDb().then(() => {
+            console.log("Database ready");
+        });
+    }, []);
 
     return (
         <Layout>

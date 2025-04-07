@@ -10,6 +10,7 @@ const colors = {
     white: "#FFFFFF",
     black: "#000000",
     error: "#FF4D4D",
+    title: "#55EFDD"
 };
 
 export default colors;

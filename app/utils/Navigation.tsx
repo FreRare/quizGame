@@ -8,20 +8,24 @@ const Stack = createNativeStackNavigator();
 export default function Navigation() {
 
     const linkingScreens = NavigationScreens.reduce((acc: { [key: string]: string }, nav) => {
-        acc[nav.title] = nav.route;
+        acc[nav.route] = nav.route;
         return acc;
     }, {});
 
     const routeLinking = {
-        prefixes: ["https://localhost:8081"],
+        prefixes: ["http://localhost", "https://localhost"],
         config: {
-            screens: linkingScreens
+            screens: {
+                ...linkingScreens,
+                NotFound: "*",
+            }
         }
     };
 
     const screens = NavigationScreens.map((nav, index) => {
         return (
-            <Stack.Screen key={index} name={nav.title} component={nav.component as any} options={{
+            <Stack.Screen key={index} name={nav.route} component={nav.component as any} options={{
+                title: nav.title,
                 headerShown: nav.showHeader,
                 headerStyle: {
                     backgroundColor: "#DDDDDD",

@@ -4,6 +4,7 @@ export type User = {
     lastName: string;
     username: string;
     password: string;
+    isAdmin: boolean;
     dateOfBirth: Date;
     registrationDate: Date;
     games: GamePlay[];
@@ -12,21 +13,15 @@ export type User = {
 export enum QuestionTopic {
     QTScience = "Science",
     QTHistory = "History",
-    QTLiterature = "Literature",
-    QTGeography = "Geography",
-    QTSports = "Sports",
-    QTMusic = "Music",
     QTMovies = "Movies",
-    QTGaming = "Gaming",
-    QTRiddles = "Riddles",
+    QTGeography = "Geography",
+    QTAnimals = "Animals",
 }
 
 export enum HardnessLevel {
     HLEasy = "Easy",
     HLMedium = "Medium",
     HLHard = "Hard",
-    HLSuperHard = "SuperHard",
-    HLImpossible = "Impossible",
 }
 
 export type Question = {
