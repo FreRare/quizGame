@@ -1,6 +1,8 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import colors from "@/assets/colors";
+import commonStyles from "@/app/utils/CommonStyles";
+import strings from "@/assets/strings";
 
 type LayoutProps = {
     children: any,
@@ -9,6 +11,7 @@ type LayoutProps = {
 function Layout(props: LayoutProps) {
     return (
         <View style={styles.container}>
+            <Text style={commonStyles.title}>{strings.PROJECT_NAME}</Text>
             {props.children}
         </View>
     );

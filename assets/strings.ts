@@ -43,8 +43,16 @@ const strings = {
     selectTopics: "Select game topics",
     selectDuration: "Select game duration",
     selectLevel: "Select game level",
+    timesUp: "Time's up",
+    gameOver: "Game over",
+    yourScore: "Your score",
     ERROR: {
-        invalidLogin: "Invalid username or password"
+        invalidLogin: "Invalid username or password",
+        topicsEmptyError: "At least one topic should be selected",
+        levelEmptyError: "Please select a level",
+        durationEmptyError: "Please select a duration",
+        notEnoughSelectedTopics: "For long games please select at least two topics",
+        notEnoughQuestions: "Sorry but there are not enough questions to perform this game, please select shorter duration or more topics"
     }
 };
 

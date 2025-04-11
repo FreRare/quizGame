@@ -42,6 +42,7 @@ export enum AnswerType{
 export type RoundPlay = {
     roundNumber: number;
     question: Question;
+    answer: string;
     points: number;
     answerType: AnswerType;
     answerTime: number; // in ms

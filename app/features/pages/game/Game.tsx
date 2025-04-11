@@ -1,9 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import StartGameForm from "@/app/features/pages/game/components/StartGameForm";
-import {Text, View} from "react-native";
+import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Layout from "@/app/global/layout";
-import {GameLength, HardnessLevel, Question, QuestionTopic} from "@/app/models/models";
+import {GameLength, HardnessLevel, Question, QuestionTopic, RoundPlay} from "@/app/models/models";
 import {AppState, useStore} from "@/app/models/GlobalState";
+import strings from "@/assets/strings";
+import commonStyles from "@/app/utils/CommonStyles";
+import colors from "@/assets/colors";
+import QuestionDisplay from "@/app/features/pages/game/components/QuestionDisplay";
 
 type GameProps = {
     navigation: any;
@@ -12,39 +16,178 @@ type GameProps = {
 const Game = (props: GameProps) => {
     const [creatingGame, setCreatingGame] = useState(true);
     const [gameInProgress, setGameInProgress] = useState(false);
+    const [isGameOver, setIsGameOver] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
+
     const [questions, setQuestions] = useState<Question[]>([]);
+    const [currentQuestion, setCurrentQuestion] = useState<Question | undefined>(undefined);
+    const [roundCount, setRoundCount] = useState<number>(1);
+    const [roundPlays, setRoundPlays] = useState<RoundPlay[]>([]);
+    const [currentScore, setCurrentScore] = useState<number>(0);
 
-    const db = useStore((s: AppState)=>s.db);
 
-    useEffect(() => {
-        if(!db){
+    const db = useStore((s: AppState) => s.db);
+
+    const handleCancel = () => {
+        setGameInProgress(false);
+        setCreatingGame(true);
+        setIsGameOver(false);
+    }
+
+    const shuffleQuestions = (q: Question[], len: number) => {
+        const shuffled = q.sort(() => Math.random() - 0.5).slice(0, len);
+        setQuestions(shuffled);
+        setCurrentQuestion(shuffled[0]);
+        setLoading(false);
+        setGameInProgress(true);
+    }
+
+    const handleGameStart = async (t: QuestionTopic[], l: HardnessLevel, d: GameLength) => {
+        setCreatingGame(false);
+        setLoading(true);
+        setRoundPlays([]);
+        setRoundCount(1);
+        setCurrentScore(0);
+        if (!db) {
             console.error("No database found!");
+            alert("No database found!")
             return;
         }
-        db.questions.find().exec().then((q)=>{
-            if(q.length <= 0){
-                console.error("No questions found!");
+        // Get topic and level related questions
+        const fetchedQuestions = await db.questions.find({
+            selector: {
+                topic: {$in: t},
+                level: {$eq: l}
+            }
+        }).exec();
+        if (fetchedQuestions.length <= 0) {
+            console.error("No questions found!");
+            return;
+        }
+
+        let parsedQuestions: Question[] = [];
+        for (const q of fetchedQuestions) {
+            parsedQuestions.push(
+                {
+                    id: q._data.id,
+                    level: q._data.level,
+                    topic: q._data.topic,
+                    text: q._data.text,
+                    goodAnswer: q._data.goodAnswer,
+                    badAnswers: q._data.badAnswers,
+                }
+            );
+        }
+        // Set up game engine
+        switch (d) {
+            case GameLength.GLShort: { // 5
+                if (parsedQuestions.length < 5) {
+                    setError(strings.ERROR.notEnoughQuestions);
+                    return;
+                }
+                shuffleQuestions(parsedQuestions, 1);
+                break;
+            }
+            case GameLength.GLMedium: { // 10
+                if (parsedQuestions.length < 10) {
+                    setError(strings.ERROR.notEnoughQuestions);
+                    return;
+                }
+                shuffleQuestions(parsedQuestions, 10);
+                break;
+            }
+            case GameLength.GLLong: { // 20
+                if (parsedQuestions.length < 20) {
+                    setError(strings.ERROR.notEnoughQuestions);
+                    return;
+                }
+                shuffleQuestions(parsedQuestions, 20);
+                break;
+            }
+            default: {
+                alert("Invalid game duration!");
                 return;
             }
-            console.warn("Questions found!", q);
-        })
-    }, []);
-
-    const handleGameStart = (t: QuestionTopic[], l: HardnessLevel, d: GameLength) => {
-
+        }
     }
+
+    const handleQuestionAnswer = (r: RoundPlay): void => {
+        setRoundPlays([...roundPlays, r]);
+        setCurrentScore(currentScore + r.points);
+        if (roundCount === questions.length) {
+            setRoundCount(1);
+            setCurrentQuestion(undefined);
+            setGameInProgress(false);
+            setIsGameOver(true);
+        }
+        setRoundCount(roundCount + 1);
+        setCurrentQuestion(questions[roundCount]);
+    }
+
+    const gameEvaluation = roundPlays.map((r) => {
+        return (
+            <View style={commonStyles.vertical}>
+                <View style={commonStyles.horizontal}>
+                    <Text style={commonStyles.text}>{r.roundNumber}.</Text>
+                    <Text style={commonStyles.text}>{r.question.text}</Text>
+
+                </View>
+                <View style={commonStyles.horizontal}>
+                    <Text style={commonStyles.text}>{r.answerType}</Text>
+                    <Text style={commonStyles.text}>{r.question.goodAnswer}</Text>
+                    <Text style={commonStyles.text}>{r.answer.length >= 0 ? r.answer : "BLANK"}</Text>
+                </View>
+            </View>
+        );
+    });
 
     return (
         <Layout>
+            <View>
+                {error && <Text style={[commonStyles.text, {color: colors.error}]}>{error}</Text>}
+            </View>
             {
                 creatingGame &&
                 (
                     <StartGameForm navigation={props.navigation} handleGameStart={handleGameStart}/>
                 )
             }
-            {gameInProgress && (<View><Text>Game started</Text></View>)}
+            {gameInProgress && (
+                <View style={commonStyles.vertical}>
+                    {
+                        currentQuestion &&
+                        (
+                            <QuestionDisplay key={roundCount} currentScore={currentScore} navigation={props.navigation}
+                                             question={currentQuestion!}
+                                             roundCount={roundCount}
+                                             finalizeResultCB={handleQuestionAnswer}/>)}
+                    <TouchableOpacity style={commonStyles.bigButton} onPress={() => handleCancel()}>
+                        <Text style={commonStyles.text}>{strings.goBack}</Text>
+                    </TouchableOpacity>
+                </View>)}
+            {isGameOver && (
+                <View style={commonStyles.vertical}>
+                    <Text style={commonStyles.title2}>{strings.gameOver}</Text>
+                    <Text style={commonStyles.title2}>{strings.yourScore}: {currentScore}</Text>
+                    <ScrollView contentContainerStyle={styles.scrollContainer}>
+                        {gameEvaluation}
+                        <TouchableOpacity style={commonStyles.bigButton} onPress={() => handleCancel()}>
+                            <Text style={commonStyles.text}>{strings.goBack}</Text>
+                        </TouchableOpacity>
+                    </ScrollView>
+                </View>
+            )}
         </Layout>
     );
 };
+
+const styles = StyleSheet.create({
+    scrollContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+
+    },
+});
 
 export default Game;

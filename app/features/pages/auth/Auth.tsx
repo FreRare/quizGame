@@ -25,9 +25,6 @@ function Auth(props: AuthProps) {
 
     return (
         <Layout>
-            <View style={styles.titleContainer}>
-                <Text style={commonStyles.title}>{strings.PROJECT_NAME}</Text>
-            </View>
             <View style={styles.backgroundImage}>
                 {isLogin && (
                     <LoginForm

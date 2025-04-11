@@ -6,17 +6,22 @@ export const questionSchema = {
     type: 'object',
     primaryKey: 'id',
     properties: {
-        id: { type: "string", maxLength: 50 },
-        topic: { type: "string", enum: Object.values(QuestionTopic) },
-        level: { type: "string", enum: Object.values(HardnessLevel) },
-        text: { type: "string" },
-        goodAnswer: { type: "string" },
+        id: {type: "string", maxLength: 50},
+        topic: {type: "string", enum: Object.values(QuestionTopic), maxLength: 50},
+        level: {type: "string", enum: Object.values(HardnessLevel), maxLength: 50},
+        text: {type: "string"},
+        goodAnswer: {type: "string"},
         badAnswers: {
             type: "array",
-            items: { type: "string" },
+            items: {type: "string"},
             minItems: 3,
             maxItems: 3,
         },
     },
     required: ["id", "topic", "level", "text", "goodAnswer", "badAnswers"],
+    indexes: [
+        ['topic'],
+        ['level'],
+        ['topic', 'level']
+    ]
 };
