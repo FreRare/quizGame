@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import {Dimensions, StyleSheet, View, Text} from "react-native";
-import Layout from "@/app/components/global/layout";
-import LoginForm from "@/app/components/pages/auth/components/loginForm";
-import RegistrationForm from "@/app/components/pages/auth/components/registrationForm";
+import Layout from "@/app/global/layout";
+import LoginForm from "@/app/features/pages/auth/components/loginForm";
+import RegistrationForm from "@/app/features/pages/auth/components/registrationForm";
 import strings from "@/assets/strings";
 import commonStyles from "@/app/utils/CommonStyles";
 import {AppState, useStore} from "@/app/models/GlobalState";

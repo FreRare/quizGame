@@ -1,14 +1,15 @@
 import React from "react";
 import strings from "@/assets/strings";
-import Home from "@/app/components/pages/home/Home";
-import Auth from "@/app/components/pages/auth/Auth";
-import Profile from "@/app/components/pages/profile/Profile";
+import Home from "@/app/features/pages/home/Home";
+import Auth from "@/app/features/pages/auth/Auth";
+import Profile from "@/app/features/pages/profile/Profile";
 import Statistics from "@/app/pages/Statistics";
-import StartGame from "@/app/components/pages/startGame/StartGame";
+import StartGameForm from "@/app/features/pages/game/components/StartGameForm";
 import AskQuestion from "@/app/pages/AskQuestion";
 import QuestionResult from "@/app/pages/QuestionResult";
 import Settings from "@/app/pages/Settings";
 import {ReParseNavigationRoute} from "@/app/hooks/navigationRouteGeneratorPipe";
+import Game from "@/app/features/pages/game/Game";
 
 /**
  * Property type
@@ -61,7 +62,7 @@ const NavigationScreens: NavigationScreenListPrimitive[] = [
         title: strings.PAGES.startGame,
         route: ReParseNavigationRoute(strings.PAGES.startGame),
         icon: "play-outline",
-        component: StartGame,
+        component: Game,
         showHeader: false,
         menubar: false,
     },

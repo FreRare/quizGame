@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import Layout from "@/app/components/global/layout";
+import Layout from "@/app/global/layout";
 import {View, Text, TouchableOpacity, StyleSheet} from "react-native";
 import {AppState, useStore} from "@/app/models/GlobalState";
 import strings from "@/assets/strings";
 import commonStyles from "@/app/utils/CommonStyles";
 import colors from "@/assets/colors";
-import GamesDisplayer from "@/app/components/pages/profile/components/gamesDisplayer";
+import GamesDisplayer from "@/app/features/pages/profile/components/gamesDisplayer";
 import * as DocumentPicker from 'expo-document-picker';
 
 type ProfileProps = {

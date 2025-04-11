@@ -1,7 +1,7 @@
 import React from 'react';
 import {Animated, StyleSheet} from "react-native";
 import Text = Animated.Text;
-import Layout from "@/app/components/global/layout";
+import Layout from "@/app/global/layout";
 import colors from "@/assets/colors";
 
 type HomeProps = {

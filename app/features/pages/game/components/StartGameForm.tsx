@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import Layout from "@/app/components/global/layout";
 import commonStyles from "@/app/utils/CommonStyles";
 import strings from "@/assets/strings";
 import colors from "@/assets/colors";
@@ -10,16 +9,23 @@ import RadioGroup from "react-native-radio-buttons-group";
 
 type StartGameProps = {
     navigation: any;
+    handleGameStart: (t: QuestionTopic[], l: HardnessLevel, d: GameLength) => void;
 }
 
-const StartGame = (props: StartGameProps) => {
+const StartGameForm = (props: StartGameProps) => {
 
     const [selectedTopics, setSelectedTopics] = useState<QuestionTopic[]>([]);
-    const [selectedLevel, setSelectedLevel] = useState<string>();
-    const [selectedDuration, setSelectedDuration] = useState<string>();
+    const [selectedLevel, setSelectedLevel] = useState<string>("");
+    const [selectedDuration, setSelectedDuration] = useState<string>("");
+    const [error, setError] = useState<string>("");
 
     const handleCancelPress = () => {
         props.navigation.navigate("/profile");
+    }
+
+    const handleGameStart = () => {
+
+        props.handleGameStart(selectedTopics, HardnessLevel.HLEasy, GameLength.GLShort);
     }
 
     const topicSelectionSection = Object.values(QuestionTopic).map((k, i) => {
@@ -70,7 +76,9 @@ const StartGame = (props: StartGameProps) => {
             <View style={commonStyles.formContainer}>
                 <Text style={commonStyles.title2}>{strings.gameSettings}</Text>
                 <Text style={[commonStyles.text, styles.sectionTitle]}>{strings.selectTopics}</Text>
-                {topicSelectionSection}
+                <View>
+                    {topicSelectionSection}
+                </View>
                 <Text style={[commonStyles.text, styles.sectionTitle]}>{strings.selectLevel}</Text>
                 <RadioGroup containerStyle={styles.radioGroup} labelStyle={[commonStyles.text, styles.radioElement]}
                             radioButtons={levelSelectorButtons} onPress={setSelectedLevel}
@@ -81,7 +89,7 @@ const StartGame = (props: StartGameProps) => {
                             selectedId={selectedDuration}/>
                 <View style={commonStyles.vertical}>
                     <TouchableOpacity style={[commonStyles.bigButton, {borderColor: colors.accent}]}
-                                      onPress={() => handleCancelPress()}>
+                                      onPress={() => handleGameStart()}>
                         <Text style={commonStyles.text}>{strings.letsGo}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[commonStyles.bigButton, {borderColor: colors.error}]}
@@ -94,12 +102,10 @@ const StartGame = (props: StartGameProps) => {
     );
 
     return (
-        <Layout>
-            <View style={commonStyles.vertical}>
-                <Text style={commonStyles.title}>{strings.startGame}</Text>
-                {gameConfigurationForm}
-            </View>
-        </Layout>
+        <View style={commonStyles.vertical}>
+            <Text style={commonStyles.title}>{strings.startGame}</Text>
+            {gameConfigurationForm}
+        </View>
     );
 };
 
@@ -124,4 +130,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default StartGame;
+export default StartGameForm;
