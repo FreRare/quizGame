@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {AnswerType, HardnessLevel, Question, RoundPlay} from "@/app/models/models";
+import {AnswerType, Question, RoundPlay} from "@/app/models/models";
 import {Animated, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import commonStyles from "@/app/utils/CommonStyles";
 import colors from "@/assets/colors";
@@ -20,7 +20,6 @@ const QuestionDisplay = (props: QuestionDisplayProps) => {
     const [shouldTimerRun, setShouldTimerRun] = useState<boolean>(true);
     const [answers, setAnswers] = useState<string[]>([]);
     const [answerTime, setAnswerTime] = useState<number>(0);
-    const [blinkColor, setBlinkColor] = useState<string | undefined>(undefined);
     const timeout = 10;
 
     useEffect(() => {

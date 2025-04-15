@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import StartGameForm from "@/app/features/pages/game/components/StartGameForm";
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Layout from "@/app/global/layout";
