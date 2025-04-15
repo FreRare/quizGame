@@ -10,6 +10,7 @@ type CountdownBarProps = {
     timeout: number;
     isTimeout: boolean;
     shouldRun: boolean;
+    answerTimeUpdateCB: (t: number) => void;
 }
 
 const CountDownBar = (props: CountdownBarProps) => {
@@ -28,6 +29,7 @@ const CountDownBar = (props: CountdownBarProps) => {
         countdownIntervalRef.current = setInterval(() => {
             setProgress(prevProgress => {
                 const newProgress = prevProgress - (0.1 / props.timeout);
+                props.answerTimeUpdateCB(Math.round((props.timeout - Math.round(newProgress * 1000) / 100) * 100) / 100);
 
                 if (newProgress <= 0) {
                     clearInterval(countdownIntervalRef.current as NodeJS.Timeout);
@@ -57,8 +59,9 @@ const CountDownBar = (props: CountdownBarProps) => {
                         </View>
                     ) :
                     <View style={commonStyles.vertical}>
-                    <Progress.Bar progress={progress} width={500}/>
-                        <Text style={commonStyles.text}>{ Math.round((props.timeout-(progress*props.timeout))*100)/100}s</Text>
+                        <Progress.Bar progress={progress} width={500}/>
+                        <Text
+                            style={commonStyles.text}>{Math.round((props.timeout - (progress * props.timeout)) * 100) / 100}s</Text>
                     </View>
             }
         </View>

@@ -106,7 +106,7 @@ const QuestionDisplay = (props: QuestionDisplayProps) => {
             <Text style={[commonStyles.title, styles.questionText]}>{props.roundCount}: {props.question.text}</Text>
             <Text style={[commonStyles.text, {color: colors.accent}]}>{strings.yourScore}: {props.currentScore}</Text>
             <CountDownBar key={props.roundCount} timesUpCB={() => timeoutHandler()} timeout={timeout}
-                          isTimeout={didTimeout} shouldRun={shouldTimerRun}/>
+                          isTimeout={didTimeout} shouldRun={shouldTimerRun} answerTimeUpdateCB={setAnswerTime}/>
             <View style={[commonStyles.horizontal, styles.answerColHolder]}>
                 <View style={[commonStyles.vertical, styles.answerRowHolder]}>
                     {answerOptions.slice(0, answerOptions.length / 2)}

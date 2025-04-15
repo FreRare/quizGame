@@ -5,12 +5,18 @@ const windowWidth = Dimensions.get("window").width;
 
 const commonStyles = StyleSheet.create({
     title: {
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
         fontSize: 30,
         marginBottom: 10,
         color: colors.title,
         fontWeight: "bold",
     },
     title2: {
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
         fontSize: 25,
         marginBottom: 10,
         color: colors.secondary,

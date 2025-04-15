@@ -23,6 +23,7 @@ const strings = {
     confirm: "Confirm",
     cancel: "Cancel",
     goBack: "Go back",
+    playAgain: "Play again",
     science: "Science",
     history: "History",
     literature: "Literature",
@@ -46,6 +47,9 @@ const strings = {
     timesUp: "Time's up",
     gameOver: "Game over",
     yourScore: "Your score",
+    breakDown: "Breakdown",
+    othersPerformance: "Other player's scores based on age (AVG.)",
+    points: "points",
     ERROR: {
         invalidLogin: "Invalid username or password",
         topicsEmptyError: "At least one topic should be selected",

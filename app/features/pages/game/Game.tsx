@@ -8,6 +8,7 @@ import strings from "@/assets/strings";
 import commonStyles from "@/app/utils/CommonStyles";
 import colors from "@/assets/colors";
 import QuestionDisplay from "@/app/features/pages/game/components/QuestionDisplay";
+import QuestionResultDisplayCard from "@/app/features/pages/game/components/QuestionResultDisplayCard";
 
 type GameProps = {
     navigation: any;
@@ -125,20 +126,9 @@ const Game = (props: GameProps) => {
         setCurrentQuestion(questions[roundCount]);
     }
 
-    const gameEvaluation = roundPlays.map((r) => {
+    const gameEvaluation = roundPlays.map((r, i) => {
         return (
-            <View style={commonStyles.vertical}>
-                <View style={commonStyles.horizontal}>
-                    <Text style={commonStyles.text}>{r.roundNumber}.</Text>
-                    <Text style={commonStyles.text}>{r.question.text}</Text>
-
-                </View>
-                <View style={commonStyles.horizontal}>
-                    <Text style={commonStyles.text}>{r.answerType}</Text>
-                    <Text style={commonStyles.text}>{r.question.goodAnswer}</Text>
-                    <Text style={commonStyles.text}>{r.answer.length >= 0 ? r.answer : "BLANK"}</Text>
-                </View>
-            </View>
+            <QuestionResultDisplayCard key={i} navigation={props.navigation} result={r}/>
         );
     });
 
@@ -169,12 +159,14 @@ const Game = (props: GameProps) => {
             {isGameOver && (
                 <View style={commonStyles.vertical}>
                     <Text style={commonStyles.title2}>{strings.gameOver}</Text>
-                    <Text style={commonStyles.title2}>{strings.yourScore}: {currentScore}</Text>
+                    <Text
+                        style={commonStyles.title2}>{strings.yourScore}: {(Math.round((currentScore / roundPlays.length) * 10) / 10) * 100}% ({currentScore} {strings.points})</Text>
                     <ScrollView contentContainerStyle={styles.scrollContainer}>
-                        {gameEvaluation}
                         <TouchableOpacity style={commonStyles.bigButton} onPress={() => handleCancel()}>
-                            <Text style={commonStyles.text}>{strings.goBack}</Text>
+                            <Text style={commonStyles.text}>{strings.playAgain}</Text>
                         </TouchableOpacity>
+                        <Text style={commonStyles.title2}>{strings.breakDown}</Text>
+                        {gameEvaluation}
                     </ScrollView>
                 </View>
             )}
