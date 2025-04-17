@@ -1,4 +1,4 @@
-import {HardnessLevel, QuestionTopic} from "@/app/models/models";
+import {HardnessLevel, Question, QuestionTopic} from "@/app/models/models";
 
 export const questionSchema = {
     title: 'question schema',
@@ -25,3 +25,19 @@ export const questionSchema = {
         ['topic', 'level']
     ]
 };
+
+
+export const convertSchemaToQuestion = (s: any): Question => {
+    return {
+        id: s._data.id,
+        badAnswers: s._data.badAnswers,
+        goodAnswer: s._data.goodAnswer,
+        level: s._data.level,
+        text: s._data.text,
+        topic: s._data.topic,
+    }
+}
+
+export const convertQuestionToSchema = (q: Question) => {
+    return {}
+}

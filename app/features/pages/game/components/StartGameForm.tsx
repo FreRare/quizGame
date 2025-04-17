@@ -129,14 +129,14 @@ const StartGameForm = (props: StartGameProps) => {
                 <RadioGroup containerStyle={styles.radioGroup} labelStyle={[commonStyles.text, styles.radioElement]}
                             radioButtons={gameDurationSelectorButtons} onPress={setSelectedDuration}
                             selectedId={selectedDuration}/>
-                <View style={commonStyles.vertical}>
-                    <TouchableOpacity style={[commonStyles.bigButton, {borderColor: colors.accent}]}
-                                      onPress={() => handleGameStart()}>
-                        <Text style={commonStyles.text}>{strings.letsGo}</Text>
-                    </TouchableOpacity>
+                <View style={commonStyles.horizontal}>
                     <TouchableOpacity style={[commonStyles.bigButton, {borderColor: colors.error}]}
                                       onPress={() => handleCancelPress()}>
                         <Text style={commonStyles.text}>{strings.cancel}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[commonStyles.bigButton, {borderColor: colors.accent}]}
+                                      onPress={() => handleGameStart()}>
+                        <Text style={commonStyles.text}>{strings.letsGo}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -59,7 +59,7 @@ const QuestionDisplay = (props: QuestionDisplayProps) => {
                 roundNumber: props.roundCount,
                 question: props.question,
                 answer: answer,
-                points: 1,
+                points: wasTheAnswerGood ? 1 : 0,
                 answerTime: answerTime,
                 answerType: wasTheAnswerGood ? AnswerType.ATScore : AnswerType.ATMissed,
             };

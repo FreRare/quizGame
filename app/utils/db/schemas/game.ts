@@ -1,4 +1,6 @@
-import {AnswerType, GameLength, HardnessLevel, QuestionTopic} from "@/app/models/models";
+import {AnswerType, GameLength, GamePlay, HardnessLevel, QuestionTopic} from "@/app/models/models";
+import firebase from "firebase/compat";
+import User = firebase.User;
 
 export const gameSchema = {
     title: 'game schema',
@@ -15,7 +17,7 @@ export const gameSchema = {
             items: {type: "string", enum: Object.values(QuestionTopic)},
         },
         startTime: {type: "string", format: "date-time"},
-        duration: {type: "number"}, // ms
+        duration: {type: "number"}, // s
         rounds: {
             type: "array",
             items: {
@@ -23,6 +25,7 @@ export const gameSchema = {
                 properties: {
                     roundNumber: {type: "number"},
                     question: {type: "string"}, // question id
+                    answer: {type: "string"},
                     points: {type: "number"},
                     answerType: {type: "string", enum: Object.values(AnswerType)},
                     answerTime: {type: "number"},

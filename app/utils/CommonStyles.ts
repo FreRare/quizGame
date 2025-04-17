@@ -18,7 +18,6 @@ const commonStyles = StyleSheet.create({
         justifyContent: "center",
         textAlign: "center",
         fontSize: 25,
-        marginBottom: 10,
         color: colors.secondary,
         fontWeight: "bold",
     },

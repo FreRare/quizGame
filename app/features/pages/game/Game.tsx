@@ -2,13 +2,14 @@ import React, {useState} from 'react';
 import StartGameForm from "@/app/features/pages/game/components/StartGameForm";
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Layout from "@/app/global/layout";
-import {GameLength, HardnessLevel, Question, QuestionTopic, RoundPlay} from "@/app/models/models";
+import {GameLength, GamePlay, HardnessLevel, Question, QuestionTopic, RoundPlay} from "@/app/models/models";
 import {AppState, useStore} from "@/app/models/GlobalState";
 import strings from "@/assets/strings";
 import commonStyles from "@/app/utils/CommonStyles";
 import colors from "@/assets/colors";
 import QuestionDisplay from "@/app/features/pages/game/components/QuestionDisplay";
 import QuestionResultDisplayCard from "@/app/features/pages/game/components/QuestionResultDisplayCard";
+import {v4 as uuidv4} from "uuid";
 
 type GameProps = {
     navigation: any;
@@ -26,9 +27,13 @@ const Game = (props: GameProps) => {
     const [roundCount, setRoundCount] = useState<number>(1);
     const [roundPlays, setRoundPlays] = useState<RoundPlay[]>([]);
     const [currentScore, setCurrentScore] = useState<number>(0);
+    const [game, setGame] = useState<GamePlay | undefined>(undefined);
 
 
     const db = useStore((s: AppState) => s.db);
+    const user = useStore((s: AppState) => s.activeUser);
+    const setUser = useStore((s: AppState) => s.setUser);
+
 
     const handleCancel = () => {
         setGameInProgress(false);
@@ -80,6 +85,16 @@ const Game = (props: GameProps) => {
                 }
             );
         }
+        setGame({
+            id: uuidv4(),
+            participant: user!,
+            topics: t,
+            type: l,
+            length: d,
+            startTime: new Date(),
+            duration: 0,
+            rounds: []
+        });
         // Set up game engine
         switch (d) {
             case GameLength.GLShort: { // 5
@@ -113,17 +128,66 @@ const Game = (props: GameProps) => {
         }
     }
 
+    const handleGameEnd = (r: RoundPlay[]) => {
+        setRoundCount(1);
+        setCurrentQuestion(undefined);
+        setGameInProgress(false);
+        setIsGameOver(true);
+
+        game!.duration = r.reduce((s, i) => s + i.answerTime, 0);
+        game!.rounds = r;
+        console.log("Game ended as: ", game);
+
+        if (db === null) {
+            setError("DB not found!");
+        }
+
+        let roundsSchema = [];
+
+        for (const r of game!.rounds) {
+            roundsSchema.push({
+                roundNumber: r.roundNumber,
+                question: r.question.id,
+                answer: r.answer,
+                points: r.points,
+                answerType: r.answerType,
+                answerTime: r.answerTime,
+            });
+        }
+
+        let gameSchema = {
+            id: game!.id,
+            participant: user!.id,
+            length: game!.length,
+            type: game!.type,
+            topics: game!.topics,
+            startTime: game!.startTime.toISOString(),
+            duration: game!.duration,
+            rounds: roundsSchema,
+        };
+
+        // Update active user too
+        user?.games.push(game!);
+        setUser(user);
+
+        db!.games.insert(gameSchema).then((g) => {
+            console.log("Game saved: ", g);
+        });
+
+    }
+
     const handleQuestionAnswer = (r: RoundPlay): void => {
         setRoundPlays([...roundPlays, r]);
         setCurrentScore(currentScore + r.points);
         if (roundCount === questions.length) {
-            setRoundCount(1);
-            setCurrentQuestion(undefined);
-            setGameInProgress(false);
-            setIsGameOver(true);
+            handleGameEnd([...roundPlays, r]);
         }
         setRoundCount(roundCount + 1);
         setCurrentQuestion(questions[roundCount]);
+    }
+
+    const handleBackToProfile = () => {
+        props.navigation.navigate("/profile");
     }
 
     const gameEvaluation = roundPlays.map((r, i) => {
@@ -160,11 +224,17 @@ const Game = (props: GameProps) => {
                 <View style={commonStyles.vertical}>
                     <Text style={commonStyles.title2}>{strings.gameOver}</Text>
                     <Text
-                        style={commonStyles.title2}>{strings.yourScore}: {(Math.round((currentScore / roundPlays.length) * 10) / 10) * 100}% ({currentScore} {strings.points})</Text>
+                        style={commonStyles.title2}>{strings.yourScore}: {(Math.round((currentScore / roundPlays.length) * 10) / 10) * 100}%
+                        ({currentScore} {strings.points})</Text>
                     <ScrollView contentContainerStyle={styles.scrollContainer}>
-                        <TouchableOpacity style={commonStyles.bigButton} onPress={() => handleCancel()}>
-                            <Text style={commonStyles.text}>{strings.playAgain}</Text>
-                        </TouchableOpacity>
+                        <View style={commonStyles.horizontal}>
+                            <TouchableOpacity style={[commonStyles.bigButton]} onPress={() => handleBackToProfile()}>
+                                <Text style={commonStyles.text}>{strings.backToProfile}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[commonStyles.bigButton]} onPress={() => handleCancel()}>
+                                <Text style={commonStyles.text}>{strings.playAgain}</Text>
+                            </TouchableOpacity>
+                        </View>
                         <Text style={commonStyles.title2}>{strings.breakDown}</Text>
                         {gameEvaluation}
                     </ScrollView>
@@ -178,7 +248,6 @@ const styles = StyleSheet.create({
     scrollContainer: {
         alignItems: "center",
         justifyContent: "center",
-
     },
 });
 

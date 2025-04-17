@@ -12,7 +12,10 @@ import strings from "@/assets/strings";
 import commonStyles from "@/app/utils/CommonStyles";
 import colors from "@/assets/colors";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {AppState, useStore} from "@/app/models/GlobalState";
+import {AppState, User, useStore} from "@/app/models/GlobalState";
+import {v4 as uuidv4} from "uuid";
+import * as Crypto from "expo-crypto";
+import {convertUserToSchema} from "@/app/utils/db/schemas/user";
 
 interface RegistrationFormProps {
     navigation: any;
@@ -31,20 +34,62 @@ const RegistrationForm = (props: RegistrationFormProps) => {
     const [showDatePicker, setShowDatePicker] = React.useState<boolean>(false);
 
     const db = useStore((state: AppState) => state.db);
+    const setUser = useStore((state: AppState) => state.setUser);
 
     if (db === null) {
         console.error("Database is null!");
     }
 
     const formatDateForHTMLInputValue = (d: Date): string => {
-        if(!d) return "";
+        if (!d) return "";
         const pad = (num: number) => num.toString().padStart(2, "0");
         return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
 
     }
 
-    const handleSignup = () => {
+    const handleSignup = async () => {
         console.log("Handling sign up");
+
+        if (username.length <= 0 || firstname.length <= 0 || lastname.length <= 0 || password.length <= 0) {
+            setError(strings.ERROR.missingFields);
+            return;
+        }
+
+        if (password.length <= 8) {
+            setError(strings.ERROR.passwordMinLength);
+            return;
+        }
+
+        if (password != passwordAgain) {
+            setError(strings.ERROR.notMatchingPasswords);
+            return;
+        }
+
+        const hashedPw = await Crypto.digestStringAsync(
+            Crypto.CryptoDigestAlgorithm.SHA256,
+            password
+        );
+
+        const user: User = {
+            id: uuidv4(),
+            username: username,
+            firstName: firstname,
+            lastName: lastname,
+            dateOfBirth: dateOfBirth,
+            password: hashedPw,
+            registrationDate: new Date(Date.now()),
+            isAdmin: false,
+            games: []
+        }
+
+        if (db === null) {
+            setError("Database is null!");
+            return;
+        }
+        const userCreated = await db.users.insert(convertUserToSchema(user));
+        console.log("Created user: ", userCreated);
+        setUser(user);
+        props.navigation.navigate("/profile");
     };
 
     return (

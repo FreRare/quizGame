@@ -6,7 +6,9 @@ import colors from "@/assets/colors";
 import Icon from "@expo/vector-icons/FontAwesome";
 import {AppState, useStore} from "@/app/models/GlobalState";
 import * as Crypto from "expo-crypto";
-import {GamePlay, User} from "@/app/models/models";
+import {GamePlay, RoundPlay, User} from "@/app/models/models";
+import {convertSchemaToUser} from "@/app/utils/db/schemas/user";
+import {convertSchemaToQuestion} from "@/app/utils/db/schemas/question";
 
 interface LoginScreenProps {
     navigation: any;
@@ -54,17 +56,7 @@ const LoginForm = (props: LoginScreenProps) => {
         if (hashedPass === firstMatch._data.password) {
             setError("");
             // Create active user
-            const user: User = {
-                id: firstMatch._data.id,
-                username: firstMatch._data.username,
-                firstName: firstMatch._data.firstName,
-                lastName: firstMatch._data.lastName,
-                password: firstMatch._data.password,
-                isAdmin: firstMatch._data.isAdmin,
-                dateOfBirth: new Date(firstMatch._data.dateOfBirth) || new Date(),
-                registrationDate: new Date(firstMatch._data.registrationDate) || new Date(),
-                games: [] // fetch games here
-            }
+            const user: User = convertSchemaToUser(firstMatch);
 
             const userGamesResult = await db.games.find({
                 selector: {
@@ -77,6 +69,26 @@ const LoginForm = (props: LoginScreenProps) => {
             if (userGamesResult.length > 0) {
                 // Create game objects
                 for (const g of userGamesResult) {
+                    let roundResults = [];
+                    for (const r of g._data.rounds) {
+                        const roundQuestionSchema = await db.questions.find({
+                            selector: {
+                                id: {
+                                    $eq: r.question,
+                                }
+                            }
+                        }).exec();
+                        const realQuestion = convertSchemaToQuestion(roundQuestionSchema[0]);
+                        const roundPlay: RoundPlay = {
+                            question: realQuestion,
+                            answer: r.answer,
+                            answerTime: r.answerTime,
+                            answerType: r.answerType,
+                            points: r.points,
+                            roundNumber: r.roundNumber
+                        }
+                        roundResults.push(roundPlay);
+                    }
                     const game: GamePlay = {
                         id: g._data.id as string,
                         participant: user,
@@ -85,7 +97,7 @@ const LoginForm = (props: LoginScreenProps) => {
                         topics: g._data.topics,
                         startTime: new Date(g._data.startTime),
                         duration: g._data.duration,
-                        rounds: [],
+                        rounds: roundResults
                     }
                     userGames.push(game);
                 }

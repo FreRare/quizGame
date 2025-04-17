@@ -10,7 +10,7 @@ type AppState = {
     activeUser: User | undefined;
     db: RxDatabase | null;
     initDb: () => Promise<void>;
-    setUser: (u: User) => void;
+    setUser: (u: User | undefined) => void;
 }
 
 

@@ -45,7 +45,7 @@ export type RoundPlay = {
     answer: string;
     points: number;
     answerType: AnswerType;
-    answerTime: number; // in ms
+    answerTime: number; // in s
 }
 
 export enum GameLength{
